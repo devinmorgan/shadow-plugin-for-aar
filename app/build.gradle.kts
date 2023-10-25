@@ -58,20 +58,9 @@ android {
 // use this extension to configure an AAR that you need to
 // shadow in a new namespace
 extensions.getByType(ShadowAarDependenciesPluginExtension::class.java).apply {
-    targetAar.set("com.datadoghq:dd-sdk-android-logs:2.2.0")
-    targetPackageName.set("com.datadog")
-    destinationPackageName.set("com.example.shadowaardeps.datadog")
-    subDependencies.set(
-        mutableListOf(
-            "androidx.annotation:annotation:1.1.0",
-            "androidx.collection:collection:1.1.0",
-            "androidx.work:work-runtime:2.8.1",
-            "com.google.code.gson:gson:2.10.1",
-            "com.lyft.kronos:kronos-android:0.0.1-alpha11",
-            "com.squareup.okhttp3:okhttp:4.11.0",
-            "org.jetbrains.kotlin:kotlin-stdlib:1.8.10"
-        )
-    )
+    relocations.set(mutableListOf(
+        listOf("com.datadog", "com.example.shadowaardeps.datadog"),
+    ))
 }
 
 dependencies {
@@ -79,6 +68,8 @@ dependencies {
     // dd-sdk-android-logs:2.2.0 above. If it were not
     // shadowed, then the build would fail
     implementation("com.datadoghq:dd-sdk-android:1.19.2")
+    add("aarImplementation", "com.datadoghq:dd-sdk-android-logs:2.2.0")
+//    add("aarImplementation", "com.datadoghq:dd-sdk-android-core:2.2.0")
 
     // dependencies included by default
     implementation("androidx.core:core-ktx:1.9.0")
